@@ -15,14 +15,14 @@ function handleFormSubmit(event){
     
     //AXIOS CALL FOR POST TO SAVE USER DETAILS ON CRUD CRUD SERVER
     axios
-    .post("https://crudcrud.com/api/a2481f4e3b5047c3828e2c07f503bc92/AppointmentDetails",myobj)
+    .post("https://crudcrud.com/api/4c0449dbc93f4175b7f9d2431e01459d/AppointmentDetails",myobj)
     .then(res => {console.log(res)
       showUserOnScreen(myobj);})
     .catch(err => console.log(err))
     // create a show users on screen function
   }
   window.addEventListener("DOMContentLoaded",() => {
-    axios.get("https://crudcrud.com/api/a2481f4e3b5047c3828e2c07f503bc92/AppointmentDetails")
+    axios.get("https://crudcrud.com/api/4c0449dbc93f4175b7f9d2431e01459d/AppointmentDetails")
     .then((res) =>{
        console.log(res.data);
 
@@ -43,7 +43,7 @@ function handleFormSubmit(event){
       button.appendChild(buttont);
       button.onclick = () =>{
         axios
-        .delete(`https://crudcrud.com/api/a2481f4e3b5047c3828e2c07f503bc92/AppointmentDetails/${myobj._id}`)
+        .delete(`https://crudcrud.com/api/4c0449dbc93f4175b7f9d2431e01459d/AppointmentDetails/${myobj._id}`)
         .then(res => {
           console.log(res)
           details.removeChild(newli);})
@@ -56,9 +56,31 @@ function handleFormSubmit(event){
       edit.onclick = () =>{
      //   localStorage.removeItem(email);
         //details.removeChild(newli);
-        document.getElementById('username').value = name;
-        document.getElementById('email').value = email;
-        document.getElementById('phone').value =phone;
+       axios
+      .put(`https://crudcrud.com/api/4c0449dbc93f4175b7f9d2431e01459d/AppointmentDetails/${myobj._id}`,{
+          username :myobj.username,
+          email:myobj.email,
+          phone:myobj.phone
+    }).then( res => {
+      document.getElementById('username').value = myobj.username;
+      document.getElementById('email').value = myobj.email;
+      document.getElementById('phone').value = myobj.phone;
+      axios
+      .delete(`https://crudcrud.com/api/4c0449dbc93f4175b7f9d2431e01459d/AppointmentDetails/${myobj._id}`)
+      .then(res => {
+        console.log(res)
+        details.removeChild(newli);})
+      .catch(err => console.log(err))
+      
+    })
+    .catch(err => console.log(err))
+      // axios
+      // .delete(`https://crudcrud.com/api/4c0449dbc93f4175b7f9d2431e01459d/AppointmentDetails/${myobj._id}`)
+      // .then(res => {
+      //   console.log(res)
+      //   details.removeChild(newli);})
+      // .catch(err => console.log(err))
+        
       }
       newli.appendChild(edit);
       details.appendChild(newli);
